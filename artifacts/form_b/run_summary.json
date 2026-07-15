@@ -1,12 +1,12 @@
 {
-  "run_id": "run-2026-07-15T10-05-37-615Z",
+  "run_id": "run-2026-07-15T10-27-21-200Z",
   "form": "forms/form_b.html",
   "answers": "answermap.json",
   "outcome": "completed",
   "fields_seen": 32,
   "filled": 31,
   "verified": 31,
-  "filled_low_confidence": 1,
+  "filled_low_confidence": 2,
   "skipped_missing": 0,
   "skipped_low_confidence": 1,
   "flagged": 0,
@@ -20,7 +20,7 @@
   },
   "llm": "off",
   "llm_calls": 0,
-  "duration_ms": 9406,
+  "duration_ms": 9582,
   "thresholds": {
     "fillBar": 0.72,
     "reviewBar": 0.5,

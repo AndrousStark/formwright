@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ironclad Mutual — Adversarial WC Intake</title>
+<style>
+  body{font-family:Georgia,serif;background:#2b2f36;color:#e8eaed;margin:0}
+  header{background:#111418;padding:12px 24px;font-size:18px;border-bottom:3px solid #c8781a}
+  .wrap{max-width:820px;margin:20px auto;background:#363b43;border:1px solid #4a5058;border-radius:6px;padding:24px 28px}
+  .step{display:none}.step.on{display:block}
+  h2{color:#c8781a;border-bottom:1px solid #4a5058;padding-bottom:6px}
+  label,.lab{display:block;margin:12px 0 3px;font-size:14px;font-weight:bold}
+  .hint{font-weight:normal;color:#9aa4af;font-size:12px}
+  input[type=text],select,textarea{width:100%;padding:7px;background:#22262c;border:1px solid #5a616b;color:#e8eaed;border-radius:3px;box-sizing:border-box}
+  table{width:100%;border-collapse:collapse;margin:8px 0}
+  th,td{border:1px solid #4a5058;padding:6px;text-align:left;font-size:13px}
+  th[scope=row]{width:180px;color:#cdd3da}
+  button{background:#c8781a;color:#111;border:0;padding:9px 22px;border-radius:3px;cursor:pointer;margin-top:18px;font-weight:bold}
+  .err{color:#ff7a7a;display:none;margin-top:8px}
+  pre{background:#1b1e23;border:1px solid #4a5058;padding:12px;white-space:pre-wrap;font-size:12px}
+  .inline label{display:inline;font-weight:normal;margin-right:16px}
+</style>
+</head>
+<body>
+<header>Ironclad Mutual — Workers' Compensation Adversarial Intake</header>
+<div class="wrap">
+
+  <!-- STEP 1: exotic label bindings -->
+  <div class="step on" id="s1">
+    <h2 id="hdr1">Applicant identity</h2>
+    <span id="lbl_name" class="lab">Registered Legal Name of the Entity</span>
+    <input type="text" id="legalName" aria-labelledby="lbl_name">
+    <input type="text" id="fein" aria-label="Federal Employer ID Number (FEIN)" style="margin-top:12px">
+    <span class="lab">Business Structure</span>
+    <select id="entity">
+      <option value="">— pick one —</option>
+      <option value="SP">Sole Proprietor</option>
+      <option value="PT">Partnership</option>
+      <option value="SC">S Corporation</option>
+      <option value="CC">C Corporation</option>
+      <option value="LLC">Limited Liability Company</option>
+    </select>
+    <label for="ops">Describe the nature of the work performed</label>
+    <textarea id="ops" rows="2"></textarea>
+    <div class="err" id="e1">Complete the required identity fields.</div>
+    <button onclick="go(1)">Proceed &rsaquo;</button>
+  </div>
+
+  <!-- STEP 2: compose + DETACHED aria-describedby format hint -->
+  <div class="step" id="s2">
+    <h2>Producer / contact</h2>
+    <span class="lab">Point of Contact</span>
+    <input type="text" id="contact" placeholder="full name">
+    <span class="lab">Contact Telephone</span>
+    <input type="text" id="phone" aria-describedby="phoneHelp">
+    <div id="phoneHelp" class="hint">Enter digits only — no spaces, parentheses, or dashes.</div>
+    <span class="lab">Contact E-mail Address</span>
+    <input type="text" id="email">
+    <div class="err" id="e2">Complete the contact fields.</div>
+    <button onclick="go(2)">Proceed &rsaquo;</button>
+  </div>
+
+  <!-- STEP 3: table with th[scope=row] labels + optional missing field -->
+  <div class="step" id="s3">
+    <h2>Primary location</h2>
+    <table>
+      <tr><th scope="row">Street Address</th><td><input type="text" id="street"></td></tr>
+      <tr><th scope="row">Municipality</th><td><input type="text" id="city"></td></tr>
+      <tr><th scope="row">State / Province</th><td><input type="text" id="state"></td></tr>
+      <tr><th scope="row">Postal / ZIP Code</th><td><input type="text" id="zip"></td></tr>
+      <tr><th scope="row">County <span class="hint">(optional)</span></th><td><input type="text" id="county"></td></tr>
+    </table>
+    <div class="err" id="e3">Complete the required address fields.</div>
+    <button onclick="go(3)">Proceed &rsaquo;</button>
+  </div>
+
+  <!-- STEP 4: NO add button, fixed 3-row grid, DESCRIPTION-FIRST column order, th column headers -->
+  <div class="step" id="s4">
+    <h2>Governing classifications</h2>
+    <p class="hint">Enter the operation's governing class rows below.</p>
+    <table id="ccgrid">
+      <thead><tr><th>Classification Description</th><th>NCCI Class Code</th><th>Estimated Annual Payroll</th><th>Number of Employees</th></tr></thead>
+      <tbody>
+        <tr><td><input type="text" class="cd"></td><td><input type="text" class="cc"></td><td><input type="text" class="cp"></td><td><input type="text" class="ce"></td></tr>
+        <tr><td><input type="text" class="cd"></td><td><input type="text" class="cc"></td><td><input type="text" class="cp"></td><td><input type="text" class="ce"></td></tr>
+        <tr><td><input type="text" class="cd"></td><td><input type="text" class="cc"></td><td><input type="text" class="cp"></td><td><input type="text" class="ce"></td></tr>
+      </tbody>
+    </table>
+    <div class="err" id="e4">Every classification row needs a code, payroll, and employee count.</div>
+    <button onclick="go(4)">Proceed &rsaquo;</button>
+  </div>
+
+  <!-- STEP 5: checkbox-conditional + DD/MM date + certify -->
+  <div class="step" id="s5">
+    <h2>Coverage history</h2>
+    <label style="font-weight:normal"><input type="checkbox" id="hadCov" onchange="document.getElementById('prior').style.display=this.checked?'block':'none'"> The applicant has held workers' compensation coverage in the current term.</label>
+    <div id="prior" style="display:none">
+      <label>Current / Expiring Carrier</label>
+      <input type="text" id="carrier">
+      <label>Coverage Inception Date <span class="hint">DD/MM/YYYY</span></label>
+      <input type="text" id="incept" placeholder="DD/MM/YYYY">
+    </div>
+    <label style="margin-top:14px"><input type="checkbox" id="uses"> The applicant engages subcontractors.</label>
+    <label style="font-weight:normal;margin-top:14px"><input type="checkbox" id="cert"> The producer certifies these statements are true and complete.</label>
+    <div class="err" id="e5">Please certify before submitting.</div>
+    <button onclick="finish()">Submit Application</button>
+  </div>
+
+  <div class="step" id="done">
+    <h2>Application received</h2>
+    <p>Reference: <b id="ref"></b></p>
+    <pre id="out"></pre>
+  </div>
+</div>
+<script>
+function v(id){return document.getElementById(id).value.trim()}
+function show(id){document.querySelectorAll('.step').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');scrollTo(0,0)}
+function go(n){
+  if(n===1){var ok=v('legalName')&&v('fein')&&v('entity')&&v('ops');document.getElementById('e1').style.display=ok?'none':'block';if(ok)show('s2')}
+  else if(n===2){var ok=v('contact')&&v('phone')&&v('email');document.getElementById('e2').style.display=ok?'none':'block';if(ok)show('s3')}
+  else if(n===3){var ok=v('street')&&v('city')&&v('state')&&v('zip');document.getElementById('e3').style.display=ok?'none':'block';if(ok)show('s4')}
+  else if(n===4){var rows=document.querySelectorAll('#ccgrid tbody tr'),ok=true;rows.forEach(function(r){if(!r.querySelector('.cc').value.trim()||!r.querySelector('.cp').value.trim()||!r.querySelector('.ce').value.trim())ok=false});document.getElementById('e4').style.display=ok?'none':'block';if(ok)show('s5')}
+}
+function finish(){
+  if(!document.getElementById('cert').checked){document.getElementById('e5').style.display='block';return}
+  var cls=[];document.querySelectorAll('#ccgrid tbody tr').forEach(function(r){cls.push({description:r.querySelector('.cd').value.trim(),code:r.querySelector('.cc').value.trim(),payroll:r.querySelector('.cp').value.trim(),employees:r.querySelector('.ce').value.trim()})});
+  var data={legalName:v('legalName'),fein:v('fein'),entityType:document.getElementById('entity').value,operations:v('ops'),
+    contactName:v('contact'),phone:v('phone'),email:v('email'),
+    location:{street:v('street'),city:v('city'),state:v('state'),zip:v('zip'),county:v('county')},
+    classifications:cls,
+    hadCoverage:document.getElementById('hadCov').checked,carrier:v('carrier'),inceptionDate:v('incept'),
+    usesSubcontractors:document.getElementById('uses').checked,certified:document.getElementById('cert').checked};
+  show('done');document.getElementById('ref').textContent='IC-'+Math.floor(100000+Math.random()*900000);
+  document.getElementById('out').textContent=JSON.stringify(data,null,2);
+}
+</script>
+</body>
+</html>

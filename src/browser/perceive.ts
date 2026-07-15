@@ -51,12 +51,36 @@ export async function perceive(page: Page): Promise<FieldDescriptor[]> {
       }
       const wrap = el.closest('label');
       if (wrap && clean(wrap.textContent)) c.push({ source: 'wrap-label', text: clean(wrap.textContent), confidence: 0.93 });
-      // preceding label-like element (form_b binds labels by adjacency, not for=)
+      // table-cell inputs: bind to the row's <th scope=row> and/or the column header
+      const cell = el.closest('td, th');
+      if (cell) {
+        const tr = cell.closest('tr');
+        const table = cell.closest('table');
+        if (tr) {
+          const rowTh = tr.querySelector('th[scope="row"]') || tr.querySelector('th');
+          if (rowTh && rowTh !== cell && clean(rowTh.textContent)) c.push({ source: 'th-row', text: clean(rowTh.textContent), confidence: 0.85 });
+          if (table) {
+            const headRow = table.querySelector('thead tr') || table.querySelector('tr');
+            if (headRow && headRow !== tr) {
+              const colTh = headRow.children[Array.from(tr.children).indexOf(cell)];
+              if (colTh && clean(colTh.textContent)) c.push({ source: 'th-col', text: clean(colTh.textContent), confidence: 0.85 });
+            }
+          }
+        }
+      }
+      // preceding label-like element (many forms bind labels by adjacency, not for=,
+      // and use <span>/<div> instead of <label>).
       let p = el.previousElementSibling, steps = 0;
       while (p && steps < 3) {
         const t = clean(p.textContent);
-        if (p.tagName === 'LABEL' && t && !p.querySelector('input,select,textarea')) { c.push({ source: 'prev-label', text: t, confidence: 0.85 }); break; }
-        if (t && t.length < 100 && /LABEL|SPAN|DIV|P|H[1-6]/.test(p.tagName) && !p.querySelector('input,select,textarea')) { c.push({ source: 'proximity', text: t, confidence: 0.55 }); break; }
+        const hasControl = p.querySelector('input,select,textarea');
+        if (t && t.length < 120 && !hasControl) {
+          const cls = p.getAttribute('class') || '';
+          if (p.tagName === 'LABEL') { c.push({ source: 'prev-label', text: t, confidence: 0.88 }); break; }
+          if (/\b(lab|label|field-?label|control-label|form-label)\b/i.test(cls)) { c.push({ source: 'label-class', text: t, confidence: 0.85 }); break; }
+          if (steps === 0 && /SPAN|DIV|P|STRONG|B|H[1-6]/.test(p.tagName) && t.length < 70) { c.push({ source: 'prev-text', text: t, confidence: 0.72 }); break; }
+          if (/SPAN|DIV|P|H[1-6]/.test(p.tagName)) { c.push({ source: 'proximity', text: t, confidence: 0.55 }); break; }
+        }
         p = p.previousElementSibling; steps++;
       }
       const ph = (el as HTMLInputElement).placeholder;
@@ -124,6 +148,7 @@ export async function perceive(page: Page): Promise<FieldDescriptor[]> {
         name: (el as HTMLInputElement).name || undefined, id: el.id || undefined,
         inputType: (el as HTMLInputElement).type || undefined,
         placeholder: (el as HTMLInputElement).placeholder || undefined,
+        describedBy: (() => { const ids = el.getAttribute('aria-describedby'); return ids ? ids.split(/\s+/).map((id) => clean(document.getElementById(id)?.textContent)).filter(Boolean).join(' ') || undefined : undefined; })(),
         pattern: (el as HTMLInputElement).pattern || undefined,
         maxLength: (el as HTMLInputElement).maxLength > 0 ? (el as HTMLInputElement).maxLength : undefined,
         required: (el as HTMLInputElement).required || false,

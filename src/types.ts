@@ -29,6 +29,7 @@ export interface FieldDescriptor {
   id?: string;
   inputType?: string;      // raw <input type>
   placeholder?: string;
+  describedBy?: string;    // resolved aria-describedby text (often a format hint)
   pattern?: string;
   maxLength?: number;
   required: boolean;

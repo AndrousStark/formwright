@@ -10,7 +10,7 @@ const PHONEISH = /[\d().\-\s]{7,}/;
 
 export function renderValue(field: FieldDescriptor, raw: string): string {
   const v = raw.trim();
-  const hint = `${field.label.name} ${field.placeholder ?? ''} ${field.pattern ?? ''}`.toLowerCase();
+  const hint = `${field.label.name} ${field.placeholder ?? ''} ${field.describedBy ?? ''} ${field.pattern ?? ''}`.toLowerCase();
 
   if (ISO_DATE.test(v)) return renderDate(field, v, hint);
   // Only treat a 9-digit value as an EIN when the FIELD says so — never reformat a plain

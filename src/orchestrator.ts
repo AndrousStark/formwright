@@ -42,7 +42,6 @@ export async function runForm(cfg: RunConfig): Promise<Record<string, unknown>> 
   await page.addInitScript(() => { (window as any).__name = (window as any).__name || ((f: any) => f); });
 
   const url = /^https?:/i.test(cfg.formPath) ? cfg.formPath : pathToFileURL(path.resolve(cfg.formPath)).href;
-  await page.goto(url, { waitUntil: 'domcontentloaded' });
 
   // filled uids are scoped to ONE page. Reset per page so a real-navigation form (which
   // re-mints element handles from 0 on each new document) never false-skips page 2+.
@@ -51,8 +50,10 @@ export async function runForm(cfg: RunConfig): Promise<Record<string, unknown>> 
   let pageIndex = 0;
   let outcome = 'max_pages';
   let captured: unknown = null;
+  let submittedOnce = false;
 
   try {
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 }); // one-time nav gets a generous timeout
     while (pageIndex < thresholds.maxPages) {
       logger.step(`Page ${pageIndex + 1}`);
       filled.clear();
@@ -63,10 +64,20 @@ export async function runForm(cfg: RunConfig): Promise<Record<string, unknown>> 
       let moved = false;
       for (let attempt = 0; attempt < thresholds.maxNextPerPage; attempt++) {
         const { transition, buttonText } = await advance(page);
+        if (/\b(submit|finish|send|place order|complete|quote)\b/i.test(buttonText)) submittedOnce = true;
         logger.info(`advance "${buttonText || '(none)'}" -> ${transition}`);
         if (transition === 'COMPLETED') { outcome = 'completed'; break; }
-        if (transition === 'ADVANCED') { moved = true; break; }
-        if (transition === 'NO_BUTTON') { outcome = 'no_advance_button'; break; }
+        if (transition === 'ADVANCED') {
+          // A submit-click that lands on a page with no fillable fields IS a completion,
+          // even when the confirmation text is unusual (e.g. a bare "Received!" page).
+          if (submittedOnce && (await perceive(page)).filter((f) => !f.disabled).length === 0) { outcome = 'completed'; break; }
+          moved = true; break;
+        }
+        if (transition === 'NO_BUTTON') {
+          const empty = (await perceive(page)).filter((f) => !f.disabled).length === 0;
+          outcome = empty && submittedOnce ? 'completed' : 'no_advance_button';
+          break;
+        }
         // STUCK / TIMEOUT: a required field may have been revealed or missed. Clear the
         // page's filled set so the refill actually re-attempts the visible fields.
         logger.warn(`page did not advance (${transition}); refilling and retrying`);
@@ -188,11 +199,20 @@ async function handleRepeating(page: Page, answers: FlatAnswers, filled: Set<str
     const countLead = (fs: FieldDescriptor[]) => fs.filter((f) => bestItem(f).key === leadKey && bestItem(f).score > 0.7).length;
 
     let fields = await perceive(page);
-    // Only a genuine repeating section: an Add button present AND >=2 distinct row-item
-    // keys visible. Guards against a lone false match like "ZIP Code" -> code.
+    // Two independent triggers for a genuine repeating section:
+    //  (A) an Add button + >=2 distinct row-item keys (dynamic rows), or
+    //  (B) no Add button but MOST row-item columns appear on >=2 rows (a pre-rendered grid).
+    // Both guard against lone false matches (e.g. "ZIP Code" -> code) and against form_a's
+    // scattered full-time/part-time employee fields (only 1 of 4 item keys repeats there).
     const addBtn0 = await findAddButton(page);
-    const distinct = new Set(fields.filter((f) => bestItem(f).score > 0.7).map((f) => bestItem(f).key));
-    if (!addBtn0 || distinct.size < 2 || countLead(fields) === 0) continue;
+    const counts: Record<string, number> = {};
+    for (const f of fields) { const b = bestItem(f); if (b.score > 0.7 && itemKeys.includes(b.key)) counts[b.key] = (counts[b.key] || 0) + 1; }
+    const distinctMatched = Object.keys(counts).length;
+    const keysRepeated = itemKeys.filter((k) => (counts[k] || 0) >= 2).length;
+    const gridSignal = keysRepeated >= Math.ceil(itemKeys.length * 0.6);
+    const triggerWithAdd = !!addBtn0 && distinctMatched >= 2 && countLead(fields) >= 1;
+    const triggerNoAdd = !addBtn0 && gridSignal && distinctMatched >= 2;
+    if (!triggerWithAdd && !triggerNoAdd) continue;
 
     logger.step(`Repeating section "${arrayKey}" — need ${items.length} rows`);
     let guard = 0;

@@ -1,0 +1,41 @@
+{
+  "legalName": "Sunrise Landscaping & Concrete LLC",
+  "fein": "84-2917465",
+  "entityType": "LLC",
+  "operations": "Residential and commercial landscaping, lawn maintenance, and light concrete flatwork such as walkways and patios.",
+  "contactName": "Maria Gonzalez",
+  "phone": "6195550142",
+  "email": "maria@sunriseoutdoor.example.com",
+  "location": {
+    "street": "4821 Verde Canyon Rd",
+    "city": "San Diego",
+    "state": "CA",
+    "zip": "92117",
+    "county": ""
+  },
+  "classifications": [
+    {
+      "description": "Landscape Gardening",
+      "code": "0042",
+      "payroll": "385000",
+      "employees": "8"
+    },
+    {
+      "description": "Clerical Office Employees",
+      "code": "8810",
+      "payroll": "104500",
+      "employees": "2"
+    },
+    {
+      "description": "Concrete or Cement Work",
+      "code": "5201",
+      "payroll": "123000",
+      "employees": "4"
+    }
+  ],
+  "hadCoverage": true,
+  "carrier": "Pacific Compensation Insurance",
+  "inceptionDate": "01/08/2026",
+  "usesSubcontractors": false,
+  "certified": true
+}

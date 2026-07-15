@@ -44,6 +44,11 @@ function rankKeys(labelNorm: string, groupNorm: string, answers: FlatAnswers): C
 
 const topCombined = (r: Ranked) => (r.cands[0] ? r.f.label.confidence * r.cands[0].score : 0);
 
+function isBooleanValue(v?: string): boolean {
+  // strict yes/no only — 1/0 are ambiguous (could be counts), so never treat them as boolean here
+  return v != null && /^(yes|no|y|n|true|false)$/i.test(v.trim());
+}
+
 function base(f: FieldDescriptor): Resolution {
   return {
     uid: f.uid, label: f.label.name, labelSource: f.label.source, answermapKey: null,
@@ -77,6 +82,27 @@ function build(r: Ranked, pick: CandidateKey | null, answers: FlatAnswers): Reso
   }
 
   res.candidateKeys = r.cands.slice(0, 3);
+
+  // A checkbox holds a BOOLEAN — bind it to the best candidate key with a yes/no value and
+  // set checked state by polarity (never fill a checkbox from a text-valued key like a carrier).
+  if (f.kind === 'checkbox') {
+    const bp = r.cands.find((c) => isBooleanValue(answers.value(c.key)));
+    if (bp) {
+      const combined = f.label.confidence * bp.score;
+      res.answermapKey = bp.key; res.matchScore = bp.score; res.combined = combined; res.source = 'boolean';
+      if (combined >= thresholds.reviewBar) {
+        res.rawValue = answers.value(bp.key);
+        res.formattedValue = answers.value(bp.key);   // act.fillCheckbox interprets polarity
+        res.action = 'filled';
+        res.status = combined < thresholds.fillBar ? 'filled_low_confidence' : 'filled';
+        res.reason = 'checkbox bound to boolean key';
+        return res;
+      }
+    }
+    res.reason = 'checkbox: no confident boolean key';
+    return res;   // skipped — attestation checkboxes are handled by the orchestrator
+  }
+
   if (!pick) { res.reason = 'no answermap key clears the floor'; return res; }
 
   const raw = answers.value(pick.key) ?? '';

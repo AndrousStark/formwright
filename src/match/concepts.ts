@@ -8,11 +8,11 @@
 import { normalize } from './normalize.js';
 
 const RAW_CONCEPTS: string[][] = [
-  ['fein', 'ein', 'employer identification number', 'federal tax id', 'federal id', 'tax id', 'tax identification number'],
+  ['fein', 'ein', 'employer identification number', 'employer id number', 'employer id', 'federal employer id', 'federal tax id', 'federal id', 'tax id', 'tax identification number'],
   ['entity type', 'legal entity', 'organization type', 'org type', 'business structure', 'type of entity', 'form of business', 'ownership type'],
   ['business legal name', 'legal business name', 'business name', 'name of insured', 'insured name', 'named insured', 'applicant name', 'legal name', 'company name', 'firm name'],
   ['dba', 'doing business as', 'trade name', 'fictitious name'],
-  ['business description', 'description of operations', 'nature of business', 'nature of operations', 'business operations', 'describe operations'],
+  ['business description', 'description of operations', 'nature of business', 'nature of operations', 'business operations', 'describe operations', 'nature of work', 'work performed', 'scope of operations', 'operations performed', 'describe the work', 'describe the nature', 'operations'],
   ['website', 'web site', 'web address', 'url'],
   ['years in business', 'years operating', 'time in business', 'years established'],
   ['first name', 'given name', 'forename'],
@@ -22,7 +22,7 @@ const RAW_CONCEPTS: string[][] = [
   ['email', 'e mail', 'email address'],
   ['phone', 'telephone', 'phone number', 'contact phone', 'mobile', 'cell'],
   ['street', 'address line', 'street address', 'mailing address'],
-  ['city', 'town'],
+  ['city', 'town', 'municipality', 'locality', 'borough'],
   ['state', 'province'],
   ['zip', 'zip code', 'postal code', 'postcode'],
   ['county'],

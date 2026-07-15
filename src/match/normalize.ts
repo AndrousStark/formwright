@@ -17,7 +17,7 @@ export function humanizeKey(key: string): string {
 export function normalize(s: string): string {
   return s
     .toLowerCase()
-    .replace(/\([^)]*\)/g, ' ')      // drop parenthetical asides e.g. "(if any)"
+    .replace(/[()]/g, ' ')           // keep parenthetical CONTENT — "(FEIN)"/"(EIN)" are the signal
     .replace(/[*:]/g, ' ')
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
