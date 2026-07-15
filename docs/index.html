@@ -159,7 +159,7 @@
   .step h4{margin:2px 0 6px;font-size:15px;letter-spacing:-.01em}
   .step p{font-size:12.8px;color:var(--muted);margin:0}
   .step.det{border-top-color:var(--good)}
-  .step.nav{border-top-color:#5a9bd6}
+  .step.nx{border-top-color:#5a9bd6}
 
   /* cascade ladder */
   .ladder{display:flex;flex-direction:column;gap:8px;margin-top:8px}
@@ -177,11 +177,19 @@
   .callout.good{border-left-color:var(--good);background:linear-gradient(90deg,var(--good-soft),transparent 60%)}
 
   .kicker-band{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  pre{background:var(--bg);border:1px solid var(--border2);border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:12.8px;line-height:1.65;color:var(--ink);margin:0 0 14px;box-shadow:var(--shadow)}
+  pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit;white-space:pre}
+  pre .c{color:var(--faint)}
 
   /* author */
   .author{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:26px}
   @media(max-width:640px){.author{grid-template-columns:1fr}}
-  .avatar{width:88px;height:88px;border-radius:18px;background:linear-gradient(135deg,var(--amber),#8a5a20);display:grid;place-items:center;font-weight:800;font-size:32px;color:#170f03;box-shadow:0 0 0 1px rgba(231,169,78,.4)}
+  .avatar{width:120px;height:146px;border-radius:16px;overflow:hidden;background:var(--surface2);box-shadow:0 0 0 1px rgba(231,169,78,.45),0 12px 32px rgba(0,0,0,.42)}
+  .avatar img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+  @media(max-width:640px){.avatar{width:120px;height:146px}}
+  footer .eyebrow{max-width:none;justify-content:center}
+  footer .eyebrow::before{display:none}
+  footer .m{text-align:center}
   .roles{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
   .role{font-family:var(--mono);font-size:12px;padding:5px 11px;border-radius:8px;border:1px solid var(--border2);background:var(--bg2);color:var(--muted)}
   .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
@@ -207,10 +215,10 @@
   <a class="brand" href="#top"><span class="mark">F</span> FormWright</a>
   <div class="navlinks">
     <a href="#how">How it works</a>
+    <a href="#adaptive">Adaptive</a>
     <a href="#proof">Proof</a>
-    <a href="#ml">ML</a>
     <a href="#dsa">Algorithms</a>
-    <a href="#author">Author</a>
+    <a href="#getstarted">Get started</a>
   </div>
   <a class="navcta" href="DESIGN.html">📐 Design doc</a>
 </div></nav>
@@ -228,13 +236,13 @@
         <span class="chip good"><b>0</b> hallucinated fills</span>
         <span class="chip acc"><b>$0 · ~6s</b> per form</span>
         <span class="chip"><b>0</b> hardcoded selectors</span>
-        <span class="chip acc"><b>~50</b> AI agents built it</span>
+        <span class="chip acc"><b>0</b> API keys needed</span>
       </div>
       <div class="hero-cta">
         <a class="btn primary" href="DESIGN.html">Read the design document →</a>
         <a class="btn ghost" href="https://github.com/AndrousStark/formwright">View source on GitHub</a>
       </div>
-      <p class="byline">by <a href="https://www.aniruddhatrey.com">Aniruddh Atrey</a> — AI &amp; Data Science Leader · Founder &amp; CTO, MetaMinds</p>
+      <p class="byline">by <a href="https://www.aniruddhatrey.com">Aniruddh Atrey</a> — AI/ML Engineer · Agentic AI &amp; Gen AI Specialist · CTO, MetaMinds</p>
     </div>
 
     <!-- live demo panel -->
@@ -297,7 +305,7 @@
     <div class="card reveal"><span class="glyph">🛑</span><h3>Abstains instead of guessing</h3><p>A blank field is a follow‑up email; a <b>wrong</b> field on an application is a mispriced policy. The costs aren't symmetric, so it never averages them away. Hallucinated fills across every test form: <b>zero</b>.</p></div>
     <div class="card reveal"><span class="glyph">💵</span><h3>Safety that costs $0</h3><p>The cascade runs cheapest‑first; the deterministic core clears every field it should for <b>$0, ~6s/form, zero LLM calls, no API key</b>. Cost never erodes safety — the safe path is the free path.</p></div>
     <div class="card reveal"><span class="glyph">🔒</span><h3>A grounded LLM that can't hallucinate</h3><p>When used, the model is a <b>bounded classifier over a closed set</b>: it may only pick an existing key (or <code>no_answer</code>) and an existing option. It selects; it cannot compose. No model words ever reach the form.</p></div>
-    <div class="card reveal"><span class="glyph">🤖</span><h3>Built by ~50 AI agents</h3><p>A 26‑agent research fleet produced a full design doc; a 6‑agent adversarial review caught a critical cross‑page bug before testing; then the adversarial form <code>form_hard</code> exposed 8 more, all fixed. Pressure‑tested, not just written.</p></div>
+    <div class="card reveal"><span class="glyph">🧬</span><h3>Adaptive &amp; self‑learning</h3><p>It reads any form's structure at runtime, so the same code runs on a form it's never seen. A cheap‑to‑expensive cascade spends effort only where a field needs it — and it gets <b>faster with use</b>: once it works out a carrier's form it caches those mappings, so every form from that carrier after the first resolves instantly and free. It learns a carrier simply by using it.</p></div>
     <div class="card reveal"><span class="glyph">🔬</span><h3>Auditable by construction</h3><p>Every run writes one record per field — label, binding method, chosen key, the full candidate scoreboard, the value, and the verify result. Every decision, including every abstention, is defensible.</p></div>
   </div>
 </section></div>
@@ -361,8 +369,8 @@
     <div class="step det"><h4>Format</h4><p>Deterministic renderers keyed off type/pattern/placeholder: <code>(619) 555‑0142</code> → <code>6195550142</code>.</p></div>
     <div class="step det"><h4>Act</h4><p>Fill / select / check via Playwright — through the owned handle, never a brittle selector.</p></div>
     <div class="step det"><h4>Read‑back verify</h4><p>Re‑read the DOM and assert the value landed. If it didn't, it didn't happen.</p></div>
-    <div class="step nav"><h4>Repeat &amp; reveal</h4><p>Expand repeating rows and conditional fields, then feed them back through the same loop.</p></div>
-    <div class="step nav"><h4>Classify transition</h4><p>Confirmation / error markers + a step‑signature diff. Never assumes the URL changed.</p></div>
+    <div class="step nx"><h4>Repeat &amp; reveal</h4><p>Expand repeating rows and conditional fields, then feed them back through the same loop.</p></div>
+    <div class="step nx"><h4>Classify transition</h4><p>Confirmation / error markers + a step‑signature diff. Never assumes the URL changed.</p></div>
   </div>
   <div class="callout reveal">Gate on both, always: a field is filled only when <b>combined = labelConfidence × matchScore</b> clears the threshold. Below the line, it stays blank and flagged — abstention is a first‑class result, not a failure.</div>
 </section></div>
@@ -437,6 +445,72 @@
   </div>
 </section></div>
 
+<!-- ADAPTIVE -->
+<section id="adaptive" class="shell">
+  <div class="sec-head reveal">
+    <p class="eyebrow">Adaptive · self‑learning</p>
+    <h2 class="title">Point it at a form it has never seen. It just works.</h2>
+    <p class="lede">FormWright carries no per‑form code and no hardcoded selectors. It reads any form's structure at runtime and runs unchanged on the next one — new labels, unfamiliar synonyms, unusual widgets, repeating rows, and conditional reveals all handled on first contact, with no training and no labeled data.</p>
+  </div>
+  <div class="two">
+    <div class="reveal">
+      <p class="m">It spends effort only where a field demands it. A cheap‑to‑expensive cascade escalates one field at a time — an exact match resolves for free, then a curated domain concept table, then fuzzy matching, then local embeddings, and only a genuinely ambiguous field reaches the grounded LLM. Easy fields stay instant and free; hard fields get exactly as much reasoning as they need, never a drop more.</p>
+      <p class="m">And it gets sharper the more you use it. The first time it meets a carrier, it works out that carrier's field‑to‑key mappings and value formatters and caches them, keyed to the form's structural signature. Every run after, those learned mappings resolve <b style="color:var(--ink)">instantly and for free</b> — so a carrier you process often becomes faster and cheaper over time. It learns a carrier simply by being used on it.</p>
+    </div>
+    <div class="reveal">
+      <div class="card">
+        <h3>What makes it adaptive</h3>
+        <ul class="clean" style="font-size:13.8px">
+          <li><b>Zero per‑form code</b> — reads any form's structure live; runs unchanged on the unseen.</li>
+          <li><b>Accessible‑name resolution</b> — derives each field's meaning from ARIA, labels, <code>&lt;th&gt;</code> headers, sibling text, or geometry.</li>
+          <li><b>Effort that scales to the field</b> — exact → alias → fuzzy → embeddings/k‑NN → grounded LLM, only as far as needed.</li>
+          <li><b>Absorbs the unseen</b> — new labels, synonyms, and widgets, with no rule changes.</li>
+          <li><b>Real‑world mechanics</b> — repeating rows, conditional reveals, value reformatting — automatically.</li>
+          <li><b>Learns each carrier by use</b> — caches resolved mappings so repeat forms resolve instantly, at zero cost.</li>
+          <li><b>No retraining, ever</b> — generalizes on first encounter; improves free with usage.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GET STARTED -->
+<div class="kicker-band"><section id="getstarted" class="shell" style="padding:64px 0">
+  <div class="sec-head reveal">
+    <p class="eyebrow">Get started</p>
+    <h2 class="title">Running in under a minute</h2>
+    <p class="lede">Clone it, install once, point it at any form — a local file or a live URL. No account, no API key, no setup ceremony: the deterministic core runs entirely on your machine.</p>
+  </div>
+  <div class="two">
+    <div class="reveal">
+      <pre><code><span class="c"># 1 · clone &amp; install</span>
+git clone https://github.com/AndrousStark/formwright &amp;&amp; cd formwright
+npm install
+npx playwright install chromium
+
+<span class="c"># 2 · run it on ANY form — local file or live URL</span>
+npx tsx src/index.ts --form &lt;url-or-path&gt; --answers answermap.json --out runs
+
+<span class="c"># optional · enable the grounded‑LLM tier for tricky fields</span>
+export ANTHROPIC_API_KEY=...   <span class="c"># or OPENAI_API_KEY</span></code></pre>
+      <p class="m" style="font-size:14.5px"><b style="color:var(--ink)">One command, one JSON, any form.</b> The same command runs on a form it has never seen — and needs no API key for the deterministic core.</p>
+    </div>
+    <div class="reveal">
+      <div class="card">
+        <h3>What you get from every run</h3>
+        <p class="m" style="font-size:13.5px;margin:0 0 8px">A complete, inspectable audit trail in your <code>runs/</code> folder:</p>
+        <ul class="clean" style="font-size:13.3px">
+          <li><code>decisions.jsonl</code> — one line per field: label read, key chosen, every candidate's score, value written, verify result</li>
+          <li><code>run_summary.json</code> — the run at a glance: filled, flagged, blank, cost</li>
+          <li><code>captured.json</code> — the exact data the form received</li>
+          <li><code>trace.zip</code> — a full Playwright trace you can replay step by step</li>
+          <li><code>page_*.png</code> — the form as it was actually filled, page by page</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section></div>
+
 <!-- AUTHOR -->
 <section id="author" class="shell">
   <div class="sec-head reveal">
@@ -444,13 +518,13 @@
     <h2 class="title">Aniruddh Atrey</h2>
   </div>
   <div class="author reveal">
-    <div class="avatar">AA</div>
+    <div class="avatar"><img src="aniruddh.jpg" alt="Aniruddh Atrey" loading="lazy"></div>
     <div>
-      <div style="font-family:var(--mono);font-size:13px;color:var(--amber2);letter-spacing:.02em">AI &amp; Data Science Leader · Entrepreneur · Cybersecurity Expert</div>
-      <p style="margin:12px 0 0">Aniruddh builds systems where machine intelligence has to be <em>right</em>, not just plausible — the same discipline that shapes FormWright's zero‑hallucination design. His work spans applied ML, LLM &amp; multi‑agent automation, computer vision, and NLP, grounded in a security engineer's instinct for what can go wrong and a founder's bias for shipping. He has delivered production AI for clients across 10+ countries and hardened critical infrastructure where the cost of failure was national security.</p>
+      <div style="font-family:var(--mono);font-size:13px;color:var(--amber2);letter-spacing:.02em">AI/ML Engineer · Agentic AI Expert · Gen AI Specialist · Cybersecurity Expert</div>
+      <p style="margin:12px 0 0">Aniruddh builds systems that reason under uncertainty and act only when they're sure — the same discipline that runs through FormWright. His work spans agentic AI, retrieval‑augmented generation, LLM orchestration, computer vision, and NLP automation, with a security engineer's instinct for what happens at the edges. He holds an <b style="color:var(--ink)">MS in Computer Science from the University of Florida</b>, is a 3× IEEE and book‑chapter author, and — formerly at INNEFU Labs (DRDO), securing 50+ Ministry of Defence assets — now ships production AI for clients across 10+ countries.</p>
       <div class="roles">
-        <span class="role">Co‑Founder &amp; COO · F1Jobs.io</span>
-        <span class="role">Founder &amp; CTO · MetaMinds</span>
+        <span class="role">CTO · MetaMinds</span>
+        <span class="role">COO · F1Jobs.io</span>
         <span class="role">Data Science Engineer · SaveLIFE Foundation</span>
       </div>
       <ul class="clean" style="font-size:14px">

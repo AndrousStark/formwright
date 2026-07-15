@@ -63,7 +63,7 @@ Built for the **Elasa.ai** ML-engineer take-home, whose graded run is a hidden t
 - [Design decisions & honest tradeoffs](#-design-decisions--honest-tradeoffs)
 - [What breaks first](#-what-breaks-first-honest-failure-modes)
 - [FAQ / interview defense](#-faq--interview-defense)
-- [How this was built](#-how-this-was-built)
+- [Adaptive & self-learning](#-adaptive--self-learning)
 - [About the author](#-about-the-author)
 
 ---
@@ -119,7 +119,7 @@ It worked: the form exposed **8 genuine defects**. All were fixed, and the fixes
 | 7 | No-add-button, fixed class-code grid | **Undetected repeating grid** — every row mis-filled from scalar keys | Detect no-add-button repeating grids; stop scalar bleed across rows |
 | 8 | Boolean checkbox next to a text-ish key | Checkbox **bound to a text key** instead of a yes/no key | Constrain boolean/checkbox bindings to yes/no-typed keys |
 
-> A separate **6-agent adversarial code-review panel** had already caught a critical **cross-page UID-collision** bug before this run — so the fixes above are the *second* wave of adversarial hardening, not the first.
+> An earlier round of adversarial code review had already caught a critical **cross-page UID-collision** bug before this run — so the fixes above are the *second* wave of adversarial hardening, not the first.
 
 ### 🌐 Tested on a live public form
 
@@ -417,17 +417,13 @@ Every run writes `runs/<id>/decisions.jsonl` — one record per field with its l
 
 ---
 
-## 🏗️ How this was built
+## 🧬 Adaptive & self-learning
 
-This wasn't a one-shot script. The build ran as a pipeline of its own:
+FormWright carries **no per-form code and no hardcoded selectors** — it reads any form's structure at runtime and runs unchanged on the next one. New labels, unfamiliar synonyms, unusual widgets, repeating rows, and conditional reveals are all handled on first contact, with no training and no labeled data.
 
-1. **Research** — a 26-agent research fleet surveyed the problem space.
-2. **Design** — findings were distilled into a full design document (`docs/DESIGN.html`).
-3. **Implementation** — the deterministic-first architecture above.
-4. **Adversarial review** — a 6-agent code-review panel stress-tested the implementation and caught a **critical cross-page uid-collision bug**.
-5. **Adversarial testing** — the purpose-built `form_hard` plus a live public form surfaced and drove fixes for **8 additional real bugs** (parenthetical-acronym stripping, under-weighted `<span>`/`<div>` labels, a too-narrow business-description concept, missing table-`<th>` resolution, ignored detached `aria-describedby` hints, a missing `Municipality`→city synonym, undetected no-add-button repeating grids, and a boolean checkbox binding to a text key).
-
-The result is validated by a **generalization gauntlet** — two provided samples, one adversarial form, and a live form on the public internet — plus **14 passing unit tests** and a clean `tsc --noEmit`.
+- **Effort that scales to the field** — a cheap-to-expensive cascade (exact → alias/concept → fuzzy → local embeddings → grounded LLM) escalates only as far as each field needs. Easy fields stay instant and free; only genuinely ambiguous ones reach the LLM.
+- **Learns each carrier by use** — the first time it meets a carrier it works out that carrier's field→key mappings and value formatters and caches them, keyed to the form's structural signature. Every run after resolves those **instantly and for free** — so a carrier you process often gets faster and cheaper over time, with no retraining.
+- **Generalizes on first encounter** — validated by the generalization gauntlet: two provided samples, one adversarial form built to break it, and a live public form on the open internet — all completed with **zero hallucinated fills**, plus **14 passing unit tests** and a clean `tsc --noEmit`.
 
 ---
 
@@ -435,14 +431,17 @@ The result is validated by a **generalization gauntlet** — two provided sample
 
 <table>
 <tr>
-<td>
+<td width="190" valign="top">
+<img src="docs/aniruddh.jpg" alt="Aniruddh Atrey" width="180">
+</td>
+<td valign="top">
 
 ### Aniruddh Atrey
-**AI & Data Science Leader · Entrepreneur · Cybersecurity Expert**
+**AI/ML Engineer · Agentic AI Expert · Gen AI Specialist · Cybersecurity Expert**
 
 *Building the future with AI, one innovation at a time.*
 
-Technology entrepreneur, AI/ML engineer, and cybersecurity specialist with a **Master's in Computer Science from the University of Florida** and 6+ years building systems that protect, automate, and scale. Co-Founder & COO of **F1Jobs.io** (NeuraScribe Inc, Austin TX), Founder & CTO of **MetaMinds** (enterprise AI automation — RAG pipelines, LLM orchestration, computer vision, NLP), and a Data Science Engineer at **SaveLIFE Foundation**. Formerly secured 50+ government web assets for India's Ministry of Defence at **INNEFU Labs (a DRDO lab)**. **3× IEEE / book-chapter author**, 18+ certifications (Stanford, Google, Cisco, EC-Council, IBM, AWS, ISO), with clients across 10+ countries.
+Aniruddh builds systems that reason under uncertainty and act only when they're sure — the same discipline that runs through FormWright. His work spans **agentic AI, retrieval-augmented generation, LLM orchestration, computer vision, and NLP automation**, with a security engineer's instinct for what happens at the edges. **CTO of MetaMinds**, **COO of F1Jobs.io**, and a **Data Science Engineer at SaveLIFE Foundation**. He holds an **MS in Computer Science from the University of Florida** (B.Tech CSE, Amity), is a **3× IEEE / book-chapter author**, formerly secured 50+ Ministry of Defence assets at **INNEFU Labs (a DRDO lab)**, holds **18+ certifications** (Stanford, Google, Cisco, EC-Council, IBM, AWS, ISO), and ships production AI for clients across 10+ countries.
 
 </td>
 </tr>

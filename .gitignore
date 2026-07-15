@@ -4,3 +4,6 @@ runs/
 .env
 .DS_Store
 trace.zip
+
+# temp screenshots
+/_*.png
