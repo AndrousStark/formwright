@@ -16,6 +16,13 @@
   <img alt="License" src="https://img.shields.io/badge/license-MIT-blue">
   <img alt="No hardcoded selectors" src="https://img.shields.io/badge/selectors-none%20hardcoded-8A2BE2">
   <img alt="Hallucinations" src="https://img.shields.io/badge/hallucinations-0-critical">
+  <a href="https://github.com/AndrousStark/formwright/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/AndrousStark/formwright/actions/workflows/ci.yml/badge.svg"></a>
+</p>
+
+<p align="center">
+  <a href="https://androusstark.github.io/formwright/"><b>🌐&nbsp;Live&nbsp;site</b></a> &nbsp;·&nbsp;
+  <a href="https://androusstark.github.io/formwright/DESIGN.html"><b>📐&nbsp;Design&nbsp;document</b></a> &nbsp;·&nbsp;
+  <a href="#-results--the-generalization-gauntlet"><b>🏆&nbsp;Results</b></a>
 </p>
 
 <p align="center"><strong>by Aniruddh Atrey</strong></p>
