@@ -8,6 +8,11 @@
 <meta property="og:title" content="FormWright — fills the form it has never seen">
 <meta property="og:description" content="Zero hardcoded selectors. Zero hallucinated answers. Deterministic-first, grounded, and proven on 4 forms including a live public one.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://androusstark.github.io/formwright/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e7a94e'/%3E%3Ctext x='16' y='23' font-family='Segoe UI,sans-serif' font-size='20' font-weight='800' fill='%23170f03' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,7 +20,7 @@
   :root{
     --bg:#0a0e15; --bg2:#0e131c; --surface:#131b27; --surface2:#1a2432; --raised:#1f2a3a;
     --border:#26303f; --border2:#334154;
-    --ink:#eaeef4; --muted:#93a2b5; --faint:#657385;
+    --ink:#eaeef4; --muted:#9aabbe; --faint:#8494a8;
     --amber:#e7a94e; --amber2:#f2c076; --amber-soft:rgba(231,169,78,.12);
     --good:#4ac585; --good-soft:rgba(74,197,133,.12);
     --flag:#e0b24e; --flag-soft:rgba(224,178,78,.12);
@@ -27,7 +32,11 @@
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} .reveal{transition:none!important;opacity:1;transform:none}}
+  a:focus-visible,.btn:focus-visible,.navcta:focus-visible,.lk:focus-visible,.brand:focus-visible{outline:2px solid var(--amber2);outline-offset:3px;border-radius:6px}
+  .btn:focus-visible,.lk:focus-visible{transform:translateY(-2px)}
+  .skip{position:absolute;left:-9999px;top:8px;background:var(--amber);color:#170f03;padding:8px 14px;border-radius:8px;font-weight:700;z-index:200}
+  .skip:focus{left:12px}
   body{
     margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
     -webkit-font-smoothing:antialiased;overflow-x:hidden;
@@ -137,7 +146,7 @@
 
   /* state pills */
   .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:100px;border:1px solid;white-space:nowrap}
-  .pill::before{content:"";width:7px;height:7px;border-radius:50%}
+  .pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
   .pill.ok{color:var(--good);border-color:rgba(74,197,133,.4);background:var(--good-soft)}.pill.ok::before{background:var(--good)}
   .pill.zero{color:var(--good);border-color:rgba(74,197,133,.5);background:var(--good-soft)}.pill.zero::before{background:var(--good)}
   .pill.flag{color:var(--flag);border-color:rgba(224,178,78,.4);background:var(--flag-soft)}.pill.flag::before{background:var(--flag)}
@@ -192,6 +201,7 @@
 </head>
 <body>
 <div id="prog"></div>
+<a href="#main" class="skip">Skip to content</a>
 
 <nav><div class="shell nav">
   <a class="brand" href="#top"><span class="mark">F</span> FormWright</a>
@@ -206,6 +216,7 @@
 </div></nav>
 
 <a id="top"></a>
+<main id="main">
 <header class="hero shell">
   <div class="hero-grid">
     <div>
@@ -279,14 +290,14 @@
 <div class="kicker-band"><section class="shell" style="padding:64px 0">
   <div class="sec-head reveal">
     <p class="eyebrow">Why it's different</p>
-    <h2 class="title">Five ideas that separate it from a form‑filling script</h2>
+    <h2 class="title">Six ideas that separate it from a form‑filling script</h2>
   </div>
   <div class="grid g3">
     <div class="card reveal"><span class="glyph">🧭</span><h3>Generalizes to an unseen form</h3><p>The graded run is a hidden third form — no selectors, ids, or labels known in advance. Brittle scripts break when a field moves; FormWright doesn't script the form, it <b>reads</b> the page. Proven on an adversarial form <em>and</em> a live public one.</p></div>
     <div class="card reveal"><span class="glyph">🛑</span><h3>Abstains instead of guessing</h3><p>A blank field is a follow‑up email; a <b>wrong</b> field on an application is a mispriced policy. The costs aren't symmetric, so it never averages them away. Hallucinated fills across every test form: <b>zero</b>.</p></div>
     <div class="card reveal"><span class="glyph">💵</span><h3>Safety that costs $0</h3><p>The cascade runs cheapest‑first; the deterministic core clears every field it should for <b>$0, ~6s/form, zero LLM calls, no API key</b>. Cost never erodes safety — the safe path is the free path.</p></div>
     <div class="card reveal"><span class="glyph">🔒</span><h3>A grounded LLM that can't hallucinate</h3><p>When used, the model is a <b>bounded classifier over a closed set</b>: it may only pick an existing key (or <code>no_answer</code>) and an existing option. It selects; it cannot compose. No model words ever reach the form.</p></div>
-    <div class="card reveal"><span class="glyph">🤖</span><h3>Built by ~50 AI agents</h3><p>A 26‑agent research fleet produced a full design doc; a 6‑agent adversarial review caught a critical cross‑page bug; adversarial + live testing fixed 8 more. Pressure‑tested, not just written.</p></div>
+    <div class="card reveal"><span class="glyph">🤖</span><h3>Built by ~50 AI agents</h3><p>A 26‑agent research fleet produced a full design doc; a 6‑agent adversarial review caught a critical cross‑page bug before testing; then the adversarial form <code>form_hard</code> exposed 8 more, all fixed. Pressure‑tested, not just written.</p></div>
     <div class="card reveal"><span class="glyph">🔬</span><h3>Auditable by construction</h3><p>Every run writes one record per field — label, binding method, chosen key, the full candidate scoreboard, the value, and the verify result. Every decision, including every abstention, is defensible.</p></div>
   </div>
 </section></div>
@@ -307,7 +318,7 @@
       <tr><td><b>selenium.dev</b> — live public form <span class="mono" style="color:var(--faint)">(the open internet)</span></td><td class="mono">mapped &amp; submitted</td><td><span class="pill zero">0</span></td><td><span class="pill ok">completed</span></td></tr>
     </tbody>
   </table></div>
-  <div class="callout good reveal"><b>Zero hallucinated fills. Every form.</b> Including the adversarial one and a live form on the public internet. The one field each form left empty was left empty <em>on purpose</em>. <span class="mono" style="color:var(--faint)">· 14 unit tests · clean tsc build</span></div>
+  <div class="callout good reveal"><b>Zero hallucinated fills. Every form.</b> Including the adversarial one and a live form on the public internet. Every field left empty was left empty <em>on purpose</em>. <span class="mono" style="color:var(--faint)">· 14 unit tests · clean tsc build</span></div>
 
   <div class="two" style="margin-top:14px">
     <div class="reveal">
@@ -456,6 +467,7 @@
     </div>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="shell">
