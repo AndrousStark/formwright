@@ -1,7 +1,11 @@
-<h1 align="center">🧭 Carrier Form Autofill Agent</h1>
+<h1 align="center">🧭 FormWright</h1>
 
 <p align="center">
-  <strong>Fills a multi-page insurance form it has never seen — from one applicant JSON — with zero per-form hardcoding and zero hallucinated answers.</strong>
+  <em>The AI agent that fills a form it has never seen.</em>
+</p>
+
+<p align="center">
+  <strong>FormWright fills a multi-page insurance form it has never seen — from one applicant JSON — with zero per-form hardcoding and zero hallucinated answers.</strong>
 </p>
 
 <p align="center">
@@ -53,7 +57,7 @@ Built for the **Elasa.ai** ML-engineer take-home, whose graded run is a hidden t
 - [What breaks first](#-what-breaks-first-honest-failure-modes)
 - [FAQ / interview defense](#-faq--interview-defense)
 - [How this was built](#-how-this-was-built)
-- [Author & credits](#-author--credits)
+- [About the author](#-about-the-author)
 
 ---
 
@@ -420,14 +424,38 @@ The result is validated by a **generalization gauntlet** — two provided sample
 
 ---
 
-## 👤 Author & credits
+## 👤 About the author
+
+<table>
+<tr>
+<td>
+
+### Aniruddh Atrey
+**AI & Data Science Leader · Entrepreneur · Cybersecurity Expert**
+
+*Building the future with AI, one innovation at a time.*
+
+Technology entrepreneur, AI/ML engineer, and cybersecurity specialist with a **Master's in Computer Science from the University of Florida** and 6+ years building systems that protect, automate, and scale. Co-Founder & COO of **F1Jobs.io** (NeuraScribe Inc, Austin TX), Founder & CTO of **MetaMinds** (enterprise AI automation — RAG pipelines, LLM orchestration, computer vision, NLP), and a Data Science Engineer at **SaveLIFE Foundation**. Formerly secured 50+ government web assets for India's Ministry of Defence at **INNEFU Labs (a DRDO lab)**. **3× IEEE / book-chapter author**, 18+ certifications (Stanford, Google, Cisco, EC-Council, IBM, AWS, ISO), with clients across 10+ countries.
+
+</td>
+</tr>
+</table>
+
+**Connect**
+
+[![Portfolio](https://img.shields.io/badge/Portfolio-aniruddhatrey.com-00d4ff?logo=astro&logoColor=white)](https://www.aniruddhatrey.com)
+[![GitHub](https://img.shields.io/badge/GitHub-AndrousStark-181717?logo=github&logoColor=white)](https://github.com/AndrousStark)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-aniruddhatrey-0A66C2?logo=linkedin&logoColor=white)](https://linkedin.com/in/aniruddhatrey)
+[![Email](https://img.shields.io/badge/Email-atreyaniruddh@gmail.com-EA4335?logo=gmail&logoColor=white)](mailto:atreyaniruddh@gmail.com)
+
+---
 
 <div align="center">
 
-**Carrier Form Autofill Agent** — built by **Aniruddh Atrey**
+**FormWright** — built by **Aniruddh Atrey**
 
 *Deterministic-first. Grounded. It would rather flag a field than fake one.*
 
-Built for the **Elasa.ai** ML-engineer take-home.
+Built for the **Elasa.ai** ML-engineer (Carrier Automation) take-home · Licensed MIT
 
 </div>
